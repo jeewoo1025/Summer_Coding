@@ -250,7 +250,45 @@ def dongbin_solution2():
     print(result)
 
 
-jeewoo_solution2()
+# 4. 미로탈출    p.152
+def jeewoo_solution3():
+    n,m = map(int, input().split())
+
+    board = []
+    for _ in range(n):
+        board.append(list(map(int, input())))
+
+    queue = deque([(0,0)])
+    # 왼,오,위,아래
+    dr = [0,0,-1,1]
+    dc = [-1,1,0,0]
+
+    while queue:
+        r,c = queue.popleft()
+        if r == (n-1) and c == (m-1):
+            break
+
+        for i in range(4):
+            nr = r+dr[i]
+            nc = c+dc[i]
+
+            if nr < 0 or nr >= n or nc < 0 or nc >= m:
+                continue
+            if board[nr][nc] == 0:
+                continue
+            if board[nr][nc] == 1:
+                board[nr][nc] = board[r][c] + 1
+                queue.append((nr,nc))
+
+    # 디버깅
+    for i in range(n):
+        print(board[i])
+    print()
+    print(board[n-1][m-1])
+
+
+jeewoo_solution3()
+
 
 
 
