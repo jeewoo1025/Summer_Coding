@@ -110,8 +110,160 @@ def turn_left():
         direction = 3
 
 
+# DFS
+def dfs(graph, v, visited):
+    # 현재 노드를 방문처리
+    visited[v] = visited
+    print(v, end=' ')
+
+    # 현재 노드와 연결된 다른 노드를 재귀적으로 방문
+    for i in graph[v]:
+        if not visited[i]:
+            dfs(graph, i, visited)
+
+# BFS
+from collections import deque
+
+def bfs(graph, start, visited):
+    queue = deque([start])
+    visited[start] = visited
+
+    while queue:
+        v = queue.popleft()
+        print(v, end=' ')
+        # 해당 원소와 연결된, 아직 방문하지 않은 원소들을 큐에 삽입
+        for i in graph[v]:
+            if not visited[i]:
+                queue.append(i)
+                visited[i] = True
+
+
+graph = [
+    [],
+    [2,3,8],
+    [1,7],
+    [1,4,5],
+    [3,5],
+    [3,4],
+    [7],
+    [2,6,8],
+    [1,7]
+]
+
+visited = [False]*9
+#dfs(graph, 1, visited)
+
 # main
-dongbin_solution()
+#dongbin_solution()
+
+
+# 3. 음료수 얼려먹기 p.149
+def jeewoo_solution2():
+    N,M = map(int, input().split())
+
+    board = []
+    for _ in range(N):
+        board.append(list(map(int, input())))
+
+
+    # DFS
+    cnt = 0
+    # 왼,오,위,아래
+    dr = [0,0,-1,1]
+    dc = [-1,1,0,0]
+
+    for r in range(N):
+        for c in range(M):
+            if board[r][c] == 0:
+                stack = [(r,c)]
+                board[r][c] = 2
+
+                print("현재 좌표 : {}, {}".format(r,c))
+                print('==== start stack ====')
+                # DFS 탐색
+                while stack:
+                    turn_time = 0
+                    r, c = stack[-1]
+
+                    for i in range(4):
+                        nr = r+dr[i]
+                        nc = c+dc[i]
+
+                        if nr<0 or nc<0 or nr>=N or nc>=M:
+                            turn_time += 1
+                            continue
+                        if board[nr][nc] == 0:
+                            r = nr
+                            c = nc
+                            board[r][c] = 2
+                            stack.append((r,c))
+                            break
+                        else:
+                            turn_time += 1
+
+                    if turn_time == 4:
+                        stack.pop()
+                    print("stack : ", stack)
+                print('==== finish stack ====', end='\n\n')
+
+                # 디버깅
+                for i in range(N):
+                    print(board[i])
+                print()
+
+                cnt += 1
+
+    print(cnt)
+
+
+def dongbin_solution2():
+    n,m = map(int, input().split())
+
+    graph = []
+    for i in range(n):
+        graph.append(list(map(int, input())))
+
+    # DFS로 특정한 노드를 방문한 뒤에 연결된 모든 노드들도 방문
+    def dfs(x,y):
+        if x<=-1 or x>=n or y<=-1 or y>=m:
+            return False
+        # 현재 노드를 방문하지 않았다면
+        if graph[x][y] == 0:
+            # 해당 노드를 방문처리
+            graph[x][y] = 1
+
+            # 상,하,좌,우를 재귀적으로 호출
+            dfs(x-1,y)
+            dfs(x,y-1)
+            dfs(x+1,y)
+            dfs(x,y+1)
+            return True
+        return False
+
+
+    # 모든 노드(위치)에 대하여 음료수 채우기
+    result = 0
+    for i in range(n):
+        for j in range(m):
+            if dfs(i,j) == True:
+                result += 1
+    print(result)
+
+
+jeewoo_solution2()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
