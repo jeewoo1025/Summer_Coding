@@ -27,7 +27,6 @@ public class ex7_0720 {
 		// 승률이 그대로면 오른쪽
 		// 승률이 높거나 같으면 왼쪽
 		long start=1, end=X;
-		long result = 0;
 		while(start<end) {
 			long mid = (start+end)/2;
 
@@ -37,12 +36,11 @@ public class ex7_0720 {
 				start = mid+1;
 			} else {
 				//System.out.println("승률이 높거나 같아짐 : "+val+" result : "+mid);
-				result = mid;
-				end = mid-1;
+				end = mid;
 			}
 		}
 
-		System.out.println(result);
+		System.out.println(end);
 	}
 
 }
