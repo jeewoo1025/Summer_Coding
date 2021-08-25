@@ -1,0 +1,6 @@
+/* 두번 이상 쓰인 이름과 해당 이름이 쓰인 횟수 조회 */
+SELECT NAME, COUNT(NAME)
+FROM ANIMAL_INS
+GROUP BY NAME
+HAVING COUNT(NAME) >= 2
+ORDER BY NAME;
