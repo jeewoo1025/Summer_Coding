@@ -78,10 +78,9 @@ def solution(expression):
 
         postfix = infixTopostfix(tokens, prec)
         result = calPostfix(postfix)
-        print("prec : ", prec, '  -> ', result)
+        # print("prec : ", prec, '  -> ', result)
 
         answer = max(answer, abs(result))
-    print(answer)
     return answer
 
 
