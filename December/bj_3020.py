@@ -5,19 +5,32 @@ import sys
 if __name__ == '__main__':
     input = sys.stdin.readline
 
+    # 입력
     N, H = map(int, input().rstrip().split())
-    obstacle = [0]*(H+1)
-    obstacle[0] = 200001
+    bottom = [0]*(H+1)  # 석순
+    top = [0]*(H+1)     # 종유석
 
     for _ in range(N//2):
-        x = int(input().rstrip())   # 석순    1~x
-        for i in range(1, x+1):
-            obstacle[i] += 1
+        bVal = int(input().rstrip())
+        tVal = int(input().rstrip())
 
-        y = int(input().rstrip())   # 종유석   (H-y+1)~H
-        for i in range((H-y+1), H+1):
-            obstacle[i] += 1
+        bottom[bVal] += 1
+        top[tVal] += 1
 
-    answer = min(obstacle)
-    print(answer, end=' ')
-    print(obstacle.count(answer))
+    # 누적합 Prefix
+    totalBottom, totalTop = [0]*(H+1), [0]*(H+1)
+    for i in range(H-1, 0, -1):
+        totalBottom[i] = bottom[i] + totalBottom[i+1]
+        totalTop[i] = top[i] + totalTop[i+1]
+
+    minVal, count = N, 0
+    for i in range(1, H+1):
+        # 길이 i의 석순을 파괴할 때 파괴되는 모든 종유석과 석순의 합
+        temp = totalBottom[i] + totalTop[H-i+1]
+        if temp == minVal:
+            count += 1
+        elif temp < minVal:
+            minVal = temp
+            count = 1
+
+    print(minVal, count)
